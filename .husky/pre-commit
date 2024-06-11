@@ -1,8 +1,1 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-. "$(dirname "$0")/common.sh"
-
-echo ">> Linting your files and fixing them if needed..."
-
-pnpm type-check
-pnpm lint-staged
+pnpm test

@@ -1,0 +1,45 @@
+
+# 2024-06-11 02:30:11.616527
++This is a NestJS project. Create a cron job boilerplate files with all required code, so that I will be ready to add my own cron jobs 
+
+# 2024-06-11 02:30:34.084564
++/add app.mod
+
+# 2024-06-11 02:30:50.939255
++/add src/app.module.ts
+
+# 2024-06-11 02:33:59.277158
++Alright. So now if I want to create multiple cron jobs, running different code at different times, how should I structure it? Where should I create my cron job files, and where should I put the logic?
+
+# 2024-06-11 02:42:28.612337
++/drop
+
+# 2024-06-11 02:42:29.606418
++/clear
+
+# 2024-06-11 02:43:02.729775
++/add src\providers\database.provider.ts
+
+# 2024-06-11 02:43:54.569437
++/add src\common\env.ts 
+
+# 2024-06-11 02:45:12.956371
++Create an OpenAI provider like this: 
+
+# 2024-06-11 02:45:26.851094
++/undo
+
+# 2024-06-11 02:45:37.668042
++Create an openai provider like this: const openai = new OpenAI({
++  apiKey: env.OPENROUTER_API_KEY,
++  baseURL: "https://openrouter.ai/api/v1",
++  defaultHeaders: {
++    "HTTP-Referer": "https://laura.matejpesl.cz/",
++  },
++})
+
+# 2024-06-11 02:46:43.033154
++/add src\cron\cron.service.ts
+
+# 2024-06-11 02:46:53.511985
++how would I then use it in e.g. cron.service.ts?
