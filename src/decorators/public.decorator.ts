@@ -1,4 +1,4 @@
-import { SetMetadata } from '@nestjs/common';
+import { SetMetadata, CustomDecorator } from '@nestjs/common';
 
 /**
  * Key used to mark routes as public.
