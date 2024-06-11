@@ -9,6 +9,6 @@ import { CronService } from './cron/cron.service';
     ScheduleModule.forRoot()
   ],
   controllers: [AppController],
-  providers: [AppService, CronService],
+  providers: [AppService, CronService, OpenAIProvider],
 })
 export class AppModule {}

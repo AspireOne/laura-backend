@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
+import { OpenAI } from 'openai';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
