@@ -43,3 +43,36 @@
 
 # 2024-06-11 02:46:53.511985
 +how would I then use it in e.g. cron.service.ts?
+
+# 2024-06-11 02:52:23.684211
++/drop
+
+# 2024-06-11 02:52:25.532738
++/clear
+
+# 2024-06-11 02:52:26.318170
++cls
+
+# 2024-06-11 02:52:31.555539
++/clear
+
+# 2024-06-11 02:52:40.074081
++/git
+
+# 2024-06-11 02:52:46.894738
++/clear
+
+# 2024-06-11 02:52:47.699848
++/drop
+
+# 2024-06-11 02:54:20.108235
++I will have cron jobs defined at src\cron\name.service.ts. However, I need someplace to store the logic. In a NestJS application like this, where should I put there larger chunks of code? If I was using the usual module/controller/service structure, I would put it in service, however this is different, since this is not some endpoint - this is very different.
+
+# 2024-06-11 02:57:26.410985
++Alright. I have one more questions about conventions I guess - when I have a resource with multiple names (e.g. post likes), shoud it be post_likes (e.g. post_likes.controller.ts, post_lies.module.ts) or postLikes?
+
+# 2024-06-11 02:57:40.283413
++/clear
+
+# 2024-06-11 02:57:40.945326
++/drop
