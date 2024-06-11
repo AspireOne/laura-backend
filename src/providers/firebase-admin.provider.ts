@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin';
 import { Provider } from '@nestjs/common';
+import { env } from '../common/env';
 
 let firebaseApp: admin.app.App;
 
