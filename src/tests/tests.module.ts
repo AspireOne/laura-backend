@@ -3,9 +3,10 @@ import { TestsService } from "./tests.service";
 import { TestsController } from "./tests.controller";
 import { DatabaseProvider } from "../providers/database.provider";
 import { OpenAIProvider } from "../providers/openai.provider";
+import { FirebaseAdminProvider } from "../providers/firebase-admin.provider";
 
 @Module({
   controllers: [TestsController],
-  providers: [TestsService, DatabaseProvider, OpenAIProvider],
+  providers: [TestsService, DatabaseProvider, OpenAIProvider, FirebaseAdminProvider],
 })
 export class TestsModule {}

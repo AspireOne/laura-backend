@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Inject } from "@nestjs/common";
-import * as admin from 'firebase-admin';
+import * as admin from "firebase-admin";
 import { TestsService } from "./tests.service";
 import { AITranslateIntoEmojisDto } from "./dto/ai-translate-into-emojis.dto";
 
@@ -7,7 +7,7 @@ import { AITranslateIntoEmojisDto } from "./dto/ai-translate-into-emojis.dto";
 export class TestsController {
   constructor(
     private readonly testsService: TestsService,
-    @Inject('FirebaseAdmin') private readonly firebaseAdmin: typeof admin,
+    @Inject("FirebaseAdmin") private readonly firebaseAdmin: typeof admin,
   ) {}
 
   @Post("ai-into-emojis")
@@ -23,7 +23,7 @@ export class TestsController {
     return await this.firebaseAdmin.messaging().send({
       token,
       notification: {
-        title: 'New Notification',
+        title: "New Notification",
         body: message,
       },
     });
