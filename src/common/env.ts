@@ -8,6 +8,8 @@ const envSchema = z.object({
   FIREBASE_PROJECT_ID: z.string().min(1),
   FIREBASE_CLIENT_EMAIL: z.string().email(),
   FIREBASE_PRIVATE_KEY: z.string().min(1).transform((key) => key.replace(/\\n/g, '\n')),
+  EXPO_ACCESS_TOKEN: z.string().min(1),
+  EXPO_PUSH_TOKEN: z.string().min(1),
 });
 
 export const env = envSchema.parse(process.env);

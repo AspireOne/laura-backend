@@ -2,12 +2,15 @@ import { Body, Controller, Post, Inject } from "@nestjs/common";
 import * as admin from "firebase-admin";
 import { TestsService } from "./tests.service";
 import { AITranslateIntoEmojisDto } from "./dto/ai-translate-into-emojis.dto";
+import { EXPO_PROVIDER_KEY, ExpoProvider } from "../providers/expo.provider";
+import Expo, { ExpoPushMessage } from "expo-server-sdk";
+import { env } from "../common/env";
 
 @Controller("tests")
 export class TestsController {
   constructor(
     private readonly testsService: TestsService,
-    @Inject("FirebaseAdmin") private readonly firebaseAdmin: typeof admin,
+    @Inject(EXPO_PROVIDER_KEY) private readonly expo: Expo,
   ) {}
 
   @Post("ai-into-emojis")
@@ -19,13 +22,12 @@ export class TestsController {
 
   @Post("send-notification")
   async sendNotification(@Body() body: { token: string; message: string }) {
-    const { token, message } = body;
-    return await this.firebaseAdmin.messaging().send({
-      token,
-      notification: {
-        title: "New Notification",
-        body: message,
-      },
-    });
+    const message: ExpoPushMessage = {
+      to: env.EXPO_PUSH_TOKEN,
+      title: "New Notification",
+      body: body.message,
+    };
+
+    return await this.expo.sendPushNotificationsAsync([message]);
   }
 }
