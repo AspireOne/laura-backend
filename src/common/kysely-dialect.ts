@@ -9,7 +9,9 @@ const requiredEnvVars = ["DATABASE_URL"];
 // Iterate the env vars and throw an error if any are missing
 requiredEnvVars.forEach((envVar) => {
   if (!process.env[envVar]) {
-    throw new Error(`Missing env var: ${envVar}, can not initialize the database connection`);
+    throw new Error(
+      `Missing env var: ${envVar}, can not initialize the database connection`,
+    );
   }
 });
 
