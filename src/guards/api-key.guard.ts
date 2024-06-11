@@ -9,12 +9,16 @@ import { Request } from "express";
 import { Inject } from "@nestjs/common";
 import { Kysely, sql } from "kysely";
 import { DB } from "kysely-codegen";
+import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager";
+
+const apiKeyCachePrefix = "guard-api-key:";
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     @Inject("Database") private readonly db: Kysely<DB>,
+    @Inject(CACHE_MANAGER) private cache: Cache,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -23,6 +27,11 @@ export class ApiKeyGuard implements CanActivate {
 
     if (!apiKey) {
       throw new UnauthorizedException("API key is missing");
+    }
+
+    const cached = await this.cache.get(`${apiKeyCachePrefix}${apiKey}`);
+    if (cached) {
+      return true;
     }
 
     const result = await this.db
@@ -35,6 +44,7 @@ export class ApiKeyGuard implements CanActivate {
       throw new UnauthorizedException("Invalid API key");
     }
 
+    await this.cache.set(`${apiKeyCachePrefix}${apiKey}`, true);
     return true;
   }
 }

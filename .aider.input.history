@@ -76,3 +76,54 @@
 
 # 2024-06-11 02:57:40.945326
 +/drop
+
+# 2024-06-11 03:18:00.624242
++/clear
+
+# 2024-06-11 03:18:15.022002
++/add src\common\env.ts
+
+# 2024-06-11 03:18:17.791839
++/add .env
+
+# 2024-06-11 03:19:02.260410
++Add an API_KEY env key
+
+# 2024-06-11 03:19:46.634169
++edit just the src\common\env.ts file, not the .env file
+
+# 2024-06-11 03:20:05.357039
++/undo
+
+# 2024-06-11 03:22:22.328937
++/drop
+
+# 2024-06-11 03:22:23.154612
++/clear
+
+# 2024-06-11 03:22:35.325579
++/add migrations\20240610T234551-add-fucks-given-table.ts
+
+# 2024-06-11 03:23:09.489429
++/drop
+
+# 2024-06-11 03:23:10.377195
++/clear
+
+# 2024-06-11 03:31:31.544114
++In this NestJS app, create a guard that will PROPERLY check in each request if the request containts an api key.
+
+# 2024-06-11 03:31:45.809380
++/add src\app.module.ts
+
+# 2024-06-11 03:34:12.736731
++/add migrations\20240611T012325-add-api-keys-table.ts
+
+# 2024-06-11 03:34:51.087349
++Based on the api keys table migration, alter the auth guard so that it properly fetches api keys and checks the validity
+
+# 2024-06-11 03:38:35.468044
++Isn't that solution a little slow? Can you recommend me any improvement (e.g. caching, storing it somewhere else than db etc.)?
+
+# 2024-06-11 03:39:06.303224
++/undo
