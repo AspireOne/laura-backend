@@ -10,6 +10,7 @@ import { FucksGivenModule } from './fucks-given/fucks-given.module';
 import { ApiKeyGuard } from './guards/api-key.guard';
 import { CacheModule } from "@nestjs/cache-manager";
 import { TestsModule } from './tests/tests.module';
+import { firebaseAdminProvider } from './providers/firebase-admin.provider';
 
 @Module({
   imports: [ScheduleModule.forRoot(), FucksGivenModule, CacheModule.register(), TestsModule],
@@ -23,6 +24,7 @@ import { TestsModule } from './tests/tests.module';
       provide: APP_GUARD,
       useClass: ApiKeyGuard,
     },
+    firebaseAdminProvider,
   ],
 })
 export class AppModule {}
