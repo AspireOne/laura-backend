@@ -2,7 +2,7 @@ import { Body, Controller, Post, Inject } from "@nestjs/common";
 import * as admin from "firebase-admin";
 import { TestsService } from "./tests.service";
 import { AITranslateIntoEmojisDto } from "./dto/ai-translate-into-emojis.dto";
-import { EXPO_PROVIDER_KEY, ExpoProvider } from "../providers/expo.provider";
+import { EXPO_PROVIDER_KEY } from "../providers/expo.provider";
 import Expo, { ExpoPushMessage } from "expo-server-sdk";
 import { env } from "../common/env";
 

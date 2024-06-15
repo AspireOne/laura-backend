@@ -1,10 +1,11 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { OpenAI } from "openai";
 import { AITranslateIntoEmojisDto } from "./dto/ai-translate-into-emojis.dto";
+import { OPENAI_PROVIDER_KEY } from "../providers/openai.provider";
 
 @Injectable()
 export class TestsService {
-  constructor(@Inject("OpenAI") private readonly openai: OpenAI) {}
+  constructor(@Inject(OPENAI_PROVIDER_KEY) private readonly openai: OpenAI) {}
 
   async aiTranslateIntoEmojis(aiTranslateIntoEmojisDto: AITranslateIntoEmojisDto) {
     const response = await this.openai.chat.completions.create({

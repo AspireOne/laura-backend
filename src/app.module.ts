@@ -11,9 +11,10 @@ import { ApiKeyGuard } from './guards/api-key.guard';
 import { CacheModule } from "@nestjs/cache-manager";
 import { TestsModule } from './tests/tests.module';
 import { FirebaseAdminProvider } from './providers/firebase-admin.provider';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
-  imports: [ScheduleModule.forRoot(), FucksGivenModule, CacheModule.register(), TestsModule],
+  imports: [ScheduleModule.forRoot(), FucksGivenModule, CacheModule.register(), TestsModule, NotificationsModule],
   controllers: [AppController],
   providers: [
     AppService,
