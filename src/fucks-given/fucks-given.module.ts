@@ -8,5 +8,4 @@ import { DatabaseProvider } from "../providers/database.provider";
   controllers: [FucksGivenController],
   providers: [FucksGivenService, DatabaseProvider],
 })
-export class FucksGivenModule {
-}
+export class FucksGivenModule {}

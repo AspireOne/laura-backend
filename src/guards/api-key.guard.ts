@@ -28,7 +28,7 @@ export class ApiKeyGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-    
+
     const apiKey = request.headers["x-api-key"];
 
     if (isPublic) {
