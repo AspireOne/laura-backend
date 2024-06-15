@@ -21,7 +21,7 @@ export class GoodMorningCronService {
   }
 
   // Fire off cron job at 12:40 PM.
-  @Cron("40 12 * * *")
+  @Cron("50 12 * * *")
   async handleCron() {
     this.logger.log("Fired good morning cron job");
     let quote: string;
