@@ -6,15 +6,21 @@ import { ScheduleModule } from "@nestjs/schedule";
 import { CronService } from "./cron/cron.service";
 import { OpenAIProvider } from "./providers/openai.provider";
 import { DatabaseProvider } from "./providers/database.provider";
-import { FucksGivenModule } from './fucks-given/fucks-given.module';
-import { ApiKeyGuard } from './guards/api-key.guard';
+import { FucksGivenModule } from "./fucks-given/fucks-given.module";
+import { ApiKeyGuard } from "./guards/api-key.guard";
 import { CacheModule } from "@nestjs/cache-manager";
-import { TestsModule } from './tests/tests.module';
-import { FirebaseAdminProvider } from './providers/firebase-admin.provider';
-import { NotificationsModule } from './notifications/notifications.module';
+import { TestsModule } from "./tests/tests.module";
+import { FirebaseAdminProvider } from "./providers/firebase-admin.provider";
+import { NotificationsModule } from "./notifications/notifications.module";
 
 @Module({
-  imports: [ScheduleModule.forRoot(), FucksGivenModule, CacheModule.register(), TestsModule, NotificationsModule],
+  imports: [
+    ScheduleModule.forRoot(),
+    FucksGivenModule,
+    CacheModule.register(),
+    TestsModule,
+    NotificationsModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

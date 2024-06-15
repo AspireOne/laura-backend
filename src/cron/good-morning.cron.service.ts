@@ -1,5 +1,5 @@
-import { Injectable, Inject } from "@nestjs/common";
-import { Cron } from "@nestjs/schedule";
+import { Injectable, Inject, Logger } from "@nestjs/common";
+import { Cron, CronExpression } from "@nestjs/schedule";
 import { EXPO_PROVIDER_KEY } from "../providers/expo.provider";
 import Expo from "expo-server-sdk";
 import { env } from "../common/env";
@@ -8,12 +8,18 @@ import { OpenAI } from "openai";
 
 @Injectable()
 export class CronService {
+  private readonly logger = new Logger(CronService.name);
+
   constructor(
     @Inject(EXPO_PROVIDER_KEY) private readonly expo: Expo,
     @Inject(OPENAI_PROVIDER_KEY) private readonly openai: OpenAI,
   ) {}
 
-  // Cron that executes every day at 11:00 AM
+  @Cron(CronExpression.EVERY_30_SECONDS)
+  async handleTestCron() {
+    this.logger.log("30 second tick in good morning cron");
+  }
+
   @Cron("0 11 * * *")
   async handleCron() {
     let quote: string;
