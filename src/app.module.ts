@@ -12,6 +12,8 @@ import { CacheModule } from "@nestjs/cache-manager";
 import { TestsModule } from "./tests/tests.module";
 import { FirebaseAdminProvider } from "./providers/firebase-admin.provider";
 import { NotificationsModule } from "./notifications/notifications.module";
+import { ExpoProvider } from "./providers/expo.provider";
+import { GoodMorningCronService } from "./cron/good-morning.cron.service";
 
 @Module({
   imports: [
@@ -22,16 +24,27 @@ import { NotificationsModule } from "./notifications/notifications.module";
     NotificationsModule,
   ],
   controllers: [AppController],
+  // Almost everything should be imported here.
+  // For example, cron services
   providers: [
-    AppService,
+    // CRON
     CronService,
+    GoodMorningCronService,
+
+    // Services
+    AppService,
+
+    // Providers
     OpenAIProvider,
     DatabaseProvider,
+    ExpoProvider,
+    FirebaseAdminProvider,
+
+    // Guards
     {
       provide: APP_GUARD,
       useClass: ApiKeyGuard,
     },
-    FirebaseAdminProvider,
   ],
 })
 export class AppModule {}

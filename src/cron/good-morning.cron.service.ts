@@ -7,8 +7,8 @@ import { OPENAI_PROVIDER_KEY } from "../providers/openai.provider";
 import { OpenAI } from "openai";
 
 @Injectable()
-export class CronService {
-  private readonly logger = new Logger(CronService.name);
+export class GoodMorningCronService {
+  private readonly logger = new Logger(GoodMorningCronService.name);
 
   constructor(
     @Inject(EXPO_PROVIDER_KEY) private readonly expo: Expo,
@@ -20,15 +20,17 @@ export class CronService {
     this.logger.log("30 second tick in good morning cron");
   }
 
-  @Cron("0 11 * * *")
+  // Fire off cron job at 12:40 PM.
+  @Cron("40 12 * * *")
   async handleCron() {
+    this.logger.log("Fired good morning cron job");
     let quote: string;
 
     try {
       const { quote: genQuote } = await this.genDailyQuote();
       quote = genQuote;
     } catch (error) {
-      console.error("Error generating quote", error);
+      this.logger.error("Error generating quote", error);
       quote = "Error generating a quote";
     }
 
