@@ -1,10 +1,10 @@
-import { Body, Controller, Post, Inject } from "@nestjs/common";
+import { Body, Controller, Post, Inject, Get } from "@nestjs/common";
 import * as admin from "firebase-admin";
 import { TestsService } from "./tests.service";
 import { AITranslateIntoEmojisDto } from "./dto/ai-translate-into-emojis.dto";
-import { EXPO_PROVIDER_KEY } from "../providers/expo.provider";
+import { EXPO_PROVIDER_KEY } from "../../common/providers/expo.provider";
 import Expo, { ExpoPushMessage } from "expo-server-sdk";
-import { env } from "../common/env";
+import { env } from "../../helpers/env";
 
 @Controller("tests")
 export class TestsController {
@@ -18,6 +18,11 @@ export class TestsController {
     @Body() aiTranslateIntoEmojisDto: AITranslateIntoEmojisDto,
   ) {
     return await this.testsService.aiTranslateIntoEmojis(aiTranslateIntoEmojisDto);
+  }
+
+  @Get("/contacts")
+  async fetchContacts() {
+    // TODO
   }
 
   @Post("send-notification")

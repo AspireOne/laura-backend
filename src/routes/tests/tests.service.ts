@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { OpenAI } from "openai";
 import { AITranslateIntoEmojisDto } from "./dto/ai-translate-into-emojis.dto";
-import { OPENAI_PROVIDER_KEY } from "../providers/openai.provider";
+import { OPENAI_PROVIDER_KEY } from "../../common/providers/openai.provider";
 
 @Injectable()
 export class TestsService {

@@ -1,9 +1,10 @@
 import * as admin from "firebase-admin";
 import { Provider } from "@nestjs/common";
-import { env } from "../common/env";
+import { env } from "../../helpers/env";
 
 let firebaseApp: admin.app.App;
 
+export const FIREBASE_ADMIN_PROVIDER_KEY = "FirebaseAdmin";
 const FirebaseAdminProvider: Provider = {
   provide: "FirebaseAdmin",
   useFactory: () => {

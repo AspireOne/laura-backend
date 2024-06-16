@@ -3,10 +3,11 @@ import { CreateFucksGivenDto } from "./dto/create-fucks-given.dto";
 import { UpdateFucksGivenDto } from "./dto/update-fucks-given.dto";
 import { DB } from "kysely-codegen";
 import { Kysely } from "kysely";
+import { DATABASE_PROVIDER_KEY } from "../../common/providers/database.provider";
 
 @Injectable()
 export class FucksGivenService {
-  constructor(@Inject("Database") private readonly db: Kysely<DB>) {}
+  constructor(@Inject(DATABASE_PROVIDER_KEY) private readonly db: Kysely<DB>) {}
 
   async create(createFucksGivenDto: CreateFucksGivenDto) {
     return await this.db

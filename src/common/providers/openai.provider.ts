@@ -1,7 +1,7 @@
 import { Provider } from "@nestjs/common";
 import { OpenAI } from "openai";
-import { env } from "../common/env";
-import { constants } from "../common/constants";
+import { env } from "../../helpers/env";
+import { constants } from "../../helpers/constants";
 
 export const OPENAI_PROVIDER_KEY = "OpenAI";
 export const OpenAIProvider: Provider = {

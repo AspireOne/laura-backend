@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common";
 import { FucksGivenService } from "./fucks-given.service";
 import { FucksGivenController } from "./fucks-given.controller";
-import { OpenAIProvider } from "../providers/openai.provider";
-import { DatabaseProvider } from "../providers/database.provider";
+import { ProvidersModule } from "../../common/providers/providers.module";
 
 @Module({
+  imports: [ProvidersModule],
   controllers: [FucksGivenController],
-  providers: [FucksGivenService, DatabaseProvider],
+  providers: [FucksGivenService],
 })
 export class FucksGivenModule {}

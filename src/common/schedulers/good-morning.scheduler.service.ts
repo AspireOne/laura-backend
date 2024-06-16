@@ -2,13 +2,13 @@ import { Injectable, Inject, Logger } from "@nestjs/common";
 import { Cron, CronExpression } from "@nestjs/schedule";
 import { EXPO_PROVIDER_KEY } from "../providers/expo.provider";
 import Expo from "expo-server-sdk";
-import { env } from "../common/env";
+import { env } from "../../helpers/env";
 import { OPENAI_PROVIDER_KEY } from "../providers/openai.provider";
 import { OpenAI } from "openai";
 
 @Injectable()
-export class GoodMorningCronService {
-  private readonly logger = new Logger(GoodMorningCronService.name);
+export class GoodMorningSchedulerService {
+  private readonly logger = new Logger(GoodMorningSchedulerService.name);
 
   constructor(
     @Inject(EXPO_PROVIDER_KEY) private readonly expo: Expo,

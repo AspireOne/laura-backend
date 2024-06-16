@@ -4,8 +4,8 @@ import { EXPO_PROVIDER_KEY } from "../providers/expo.provider";
 import Expo from "expo-server-sdk";
 
 @Injectable()
-export class CronService {
-  private readonly logger = new Logger(CronService.name);
+export class TestSchedulerService {
+  private readonly logger = new Logger(TestSchedulerService.name);
 
   constructor(@Inject(EXPO_PROVIDER_KEY) private readonly expo: Expo) {}
 
