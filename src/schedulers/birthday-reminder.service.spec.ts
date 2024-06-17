@@ -1,6 +1,40 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { SchedulersModule } from "./schedulers.module";
 import { BirthdayReminderService } from "./birthday-reminder.service";
+import { DatabaseProvider } from "../common/providers/database.provider";
+import { GoogleOauthClientService } from "../common/services/google-oauth-client.service";
+import { GoogleOauthTokenManagementService } from "../common/services/google-oauth-token-management.service";
+import { Kysely } from "kysely";
+import { OAuth2Client } from "google-auth-library";
+
+jest.mock("../common/providers/database.provider", () => ({
+  DatabaseProvider: {
+    provide: "Database",
+    useFactory: () => ({
+      selectFrom: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      select: jest.fn().mockReturnThis(),
+      limit: jest.fn().mockReturnThis(),
+      execute: jest.fn().mockResolvedValue([]),
+      deleteFrom: jest.fn().mockReturnThis(),
+      insertInto: jest.fn().mockReturnThis(),
+      values: jest.fn().mockReturnThis(),
+      onConflict: jest.fn().mockReturnThis(),
+    }),
+  },
+})));
+
+jest.mock("../common/services/google-oauth-client.service", () => ({
+  GoogleOauthClientService: {
+    getOAuthClient: jest.fn().mockResolvedValue(new OAuth2Client()),
+  },
+}));
+
+jest.mock("../common/services/google-oauth-token-management.service", () => ({
+  GoogleOauthTokenManagementService: {
+    ensureClientIsAuthorized: jest.fn().mockResolvedValue(true),
+  },
+}));
 
 describe("SchedulerService", () => {
   let schedulerService: BirthdayReminderService;
