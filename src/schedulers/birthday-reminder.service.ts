@@ -17,6 +17,8 @@ import { SchedulerErrorHandlerService } from "../common/services/scheduler-error
 @Injectable()
 export class BirthdayReminderService {
   private readonly logger = new Logger(BirthdayReminderService.name);
+  private readonly today: Date;
+  private readonly checkDate: Date;
 
   constructor(
     @Inject(EXPO_PROVIDER_KEY) private readonly expo: Expo,
@@ -25,7 +27,14 @@ export class BirthdayReminderService {
     private readonly errorHandler: SchedulerErrorHandlerService,
     private readonly oauth: GoogleOauthClientService,
     private readonly contacts: ContactsService,
-  ) {}
+  ) {
+    this.today = new Date();
+    this.today.setHours(0, 0, 0, 0);
+
+    this.checkDate = new Date();
+    this.checkDate.setHours(0, 0, 0, 0);
+    this.checkDate.setDate(this.checkDate.getDate() + 7);
+  }
 
   @Cron(CronExpression.EVERY_DAY_AT_NOON)
   async handleCron() {
@@ -38,27 +47,19 @@ export class BirthdayReminderService {
 
     this.logger.log("contacts: ", contacts);
 
-    const checkDate = new Date();
-    checkDate.setHours(0, 0, 0, 0);
-    checkDate.setDate(checkDate.getDate() + 7);
-
     // format as dd mm yyyy
-    this.logger.log("checkDate: ", checkDate.toISOString().split("T")[0]);
+    this.logger.log("checkDate: ", this.checkDate.toISOString().split("T")[0]);
 
-    const namedays = await this.getContactsWithNameday(checkDate, contacts);
-    const birthdays = await this.getContactsWithBirthday(checkDate, contacts);
+    const namedays = await this.getContactsWithNameday(this.checkDate, contacts);
+    const birthdays = await this.getContactsWithBirthday(this.checkDate, contacts);
 
-    await this.addDayToDb(checkDate, "nameday", namedays);
-    await this.addDayToDb(checkDate, "birthday", birthdays);
+    await this.addDayToDb(this.checkDate, "nameday", namedays);
+    await this.addDayToDb(this.checkDate, "birthday", birthdays);
 
-    await this.sendNotifications();
+    await this.sendNotifications(this.today);
   }
 
-  async sendNotifications() {
-    // Get today's date
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
+  async sendNotifications(today: Date) {
     const events = await this.db
       .selectFrom("events")
       .select(["id", "event_type", "event_name", "event_date"])
