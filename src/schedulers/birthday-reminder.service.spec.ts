@@ -10,6 +10,7 @@ import { FirebaseAdminProvider } from "../common/providers/firebase-admin.provid
 import { OpenAIProvider } from "../common/providers/openai.provider";
 import { GoogleOAuthProvider } from "../common/providers/google-oauth.provider";
 import { GoogleOauthTokenManagementService } from "src/common/services/google-oauth-token-management.service";
+import { ServicesModule } from "src/common/services/services.module";
 
 describe("BirthdayReminderService", () => {
   let service: BirthdayReminderService;
@@ -28,7 +29,7 @@ describe("BirthdayReminderService", () => {
         OpenAIProvider,
         GoogleOAuthProvider,
       ],
-      imports: [ProvidersModule],
+      imports: [ProvidersModule, ServicesModule],
     }).compile();
 
     service = module.get<BirthdayReminderService>(BirthdayReminderService);
