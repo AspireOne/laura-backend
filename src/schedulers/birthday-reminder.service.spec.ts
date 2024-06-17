@@ -17,7 +17,9 @@ describe('BirthdayReminderService', () => {
         BirthdayReminderService,
         {
           provide: Expo,
-          useValue: {},
+          useValue: {
+            sendPushNotificationsAsync: jest.fn().mockResolvedValue({}),
+          },
         },
         {
           provide: OpenAI,
