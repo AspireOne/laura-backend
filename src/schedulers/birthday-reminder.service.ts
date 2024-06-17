@@ -38,12 +38,15 @@ export class BirthdayReminderService {
 
   @Cron(CronExpression.EVERY_DAY_AT_NOON)
   async handleCron() {
+    this.logger.log("handleCron started");
     await this.errorHandler.notifyOnError(this.execute, BirthdayReminderService.name);
   }
 
   async execute() {
     const oauthClient = await this.oauth.getOAuthClient();
+    this.logger.log("OAuth client obtained");
     const contacts = await this.contacts.retrieveContacts(oauthClient);
+    this.logger.log("Contacts retrieved");
 
     this.logger.log("contacts: ", contacts);
 
