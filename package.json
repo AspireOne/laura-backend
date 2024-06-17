@@ -33,7 +33,7 @@
     "db:migrate:down": "ts-node src/helpers/migrate-cli.ts down && pnpm db:sync",
     "workflow:act": "gh act push --defaultbranch main",
     "prepare": "husky",
-    "merge-dev": "git push && git switch staging && git merge development && git push && git switch main && git merge staging && git push && git switch development",
+    "commit:prod": "git push && git switch staging && git merge development && git push && git switch main && git merge staging && git push && git switch development",
     "authorize-oauth": "ts-node src/helpers/authorize-oauth.ts"
   },
   "dependencies": {
