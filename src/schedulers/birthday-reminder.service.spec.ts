@@ -3,10 +3,12 @@ import { BirthdayReminderService } from './birthday-reminder.service';
 import { SchedulerErrorHandlerService } from '../common/services/scheduler-error-handler.service';
 import { GoogleOauthClientService } from '../common/services/google-oauth-client.service';
 import { ContactsService } from '../common/services/contacts.service';
-import { Kysely } from 'kysely';
-import { DB } from 'kysely-codegen';
-import Expo from 'expo-server-sdk';
-import { OpenAI } from 'openai';
+import { ProvidersModule } from '../common/providers/providers.module';
+import { DatabaseProvider } from '../common/providers/database.provider';
+import { ExpoProvider } from '../common/providers/expo.provider';
+import { FirebaseAdminProvider } from '../common/providers/firebase-admin.provider';
+import { OpenAIProvider } from '../common/providers/openai.provider';
+import { GoogleOAuthProvider } from '../common/providers/google-oauth.provider';
 
 describe('BirthdayReminderService', () => {
   let service: BirthdayReminderService;
@@ -15,38 +17,14 @@ describe('BirthdayReminderService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         BirthdayReminderService,
-        {
-          provide: Expo,
-          useValue: {
-            sendPushNotificationsAsync: jest.fn().mockResolvedValue({}),
-          },
-        },
-        {
-          provide: OpenAI,
-          useValue: {},
-        },
-        {
-          provide: Kysely,
-          useValue: {},
-        },
-        {
-          provide: SchedulerErrorHandlerService,
-          useValue: {
-            notifyOnError: jest.fn().mockImplementation((fn) => fn()),
-          },
-        },
-        {
-          provide: GoogleOauthClientService,
-          useValue: {
-            getOAuthClient: jest.fn().mockResolvedValue({}),
-          },
-        },
-        {
-          provide: ContactsService,
-          useValue: {
-            retrieveContacts: jest.fn().mockResolvedValue([]),
-          },
-        },
+        SchedulerErrorHandlerService,
+        GoogleOauthClientService,
+        ContactsService,
+        DatabaseProvider,
+        ExpoProvider,
+        FirebaseAdminProvider,
+        OpenAIProvider,
+        GoogleOAuthProvider,
       ],
     }).compile();
 
