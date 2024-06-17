@@ -5,6 +5,6 @@
 // - common are project specific and should be shared only within the project.
 // - common should also contain libs etc.
 
-function removeDiacritics(str: string) {
+export function replaceDiacritics(str: string) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }

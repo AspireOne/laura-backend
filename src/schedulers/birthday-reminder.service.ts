@@ -11,6 +11,8 @@ import { DATABASE_PROVIDER_KEY } from "../common/providers/database.provider";
 import { Kysely } from "kysely";
 import { DB } from "kysely-codegen";
 import { env } from "../helpers/env";
+import { replaceDiacritics } from "../utils";
+import { SchedulerErrorHandlerService } from "../common/services/scheduler-error-handler.service";
 
 @Injectable()
 export class BirthdayReminderService {
@@ -20,12 +22,17 @@ export class BirthdayReminderService {
     @Inject(EXPO_PROVIDER_KEY) private readonly expo: Expo,
     @Inject(OPENAI_PROVIDER_KEY) private readonly openai: OpenAI,
     @Inject(DATABASE_PROVIDER_KEY) private readonly db: Kysely<DB>,
+    private readonly errorHandler: SchedulerErrorHandlerService,
     private readonly oauth: GoogleOauthClientService,
     private readonly contacts: ContactsService,
   ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_NOON)
   async handleCron() {
+    await this.errorHandler.notifyOnError(this.execute, BirthdayReminderService.name);
+  }
+
+  async execute() {
     const oauthClient = await this.oauth.getOAuthClient();
     const contacts = await this.contacts.retrieveContacts(oauthClient);
 
@@ -41,8 +48,8 @@ export class BirthdayReminderService {
     const namedays = await this.getContactsWithNameday(checkDate, contacts);
     const birthdays = await this.getContactsWithBirthday(checkDate, contacts);
 
-    await this.addToDb(checkDate, "nameday", namedays);
-    await this.addToDb(checkDate, "birthday", birthdays);
+    await this.addDayToDb(checkDate, "nameday", namedays);
+    await this.addDayToDb(checkDate, "birthday", birthdays);
 
     await this.sendNotifications();
   }
@@ -59,11 +66,17 @@ export class BirthdayReminderService {
       .execute();
 
     for (const event of events) {
+      this.logger.log(
+        "Checking whether to send notification to event ",
+        JSON.stringify(event),
+      );
       event.event_date.setHours(0, 0, 0, 0);
 
       const diffInDays = Math.round(
         (event.event_date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
       );
+
+      this.logger.log("difference (days) between today and event date: ", diffInDays);
 
       if ([0, 3, 7].includes(diffInDays)) {
         await this.expo.sendPushNotificationsAsync([
@@ -78,7 +91,7 @@ export class BirthdayReminderService {
     }
   }
 
-  async addToDb(date: Date, type: "birthday" | "nameday", contacts: Contact[]) {
+  async addDayToDb(date: Date, type: "birthday" | "nameday", contacts: Contact[]) {
     for (const person of contacts) {
       await this.db
         .insertInto("events")
@@ -87,6 +100,7 @@ export class BirthdayReminderService {
           event_name: `${person.name} has ${type} in a week!`,
           event_date: date,
         })
+        .onConflict((oc) => oc.doNothing())
         .execute();
     }
   }
@@ -111,14 +125,14 @@ export class BirthdayReminderService {
   }
 
   async getContactsWithNameday(date: Date, contacts: Contact[]): Promise<Contact[]> {
-    const data = await api.getNameDay(date);
-    this.logger.log("data from nameday api: ", data);
+    const nemadayData = await api.getNameDay(date);
+    this.logger.log("data from nameday api: ", nemadayData);
     return contacts.filter((contact) => {
-      const contactName = removeDiacritics(contact.name).toLowerCase();
-      const dataName = removeDiacritics(data.name).toLowerCase();
+      const contactName = replaceDiacritics(contact.name).toLowerCase();
+      const nameday = replaceDiacritics(nemadayData.name).toLowerCase();
       const regex = new RegExp(`\\b${contactName}\\b`, "i");
 
-      console.log("checking", dataName, " against ", contactName);
+      console.log("checking", nameday, " against ", contactName);
       return regex.test(contactName);
     });
   }
