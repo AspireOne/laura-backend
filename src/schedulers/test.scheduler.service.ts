@@ -9,7 +9,7 @@ export class TestSchedulerService {
 
   constructor(@Inject(EXPO_PROVIDER_KEY) private readonly expo: Expo) {}
 
-  @Cron(CronExpression.EVERY_10_MINUTES)
+  /*@Cron(CronExpression.EVERY_10_MINUTES)
   handleCron() {
     this.logger.log("10 minutes tick");
   }
@@ -22,5 +22,5 @@ export class TestSchedulerService {
   @Cron(CronExpression.EVERY_30_SECONDS)
   async handleTestCron() {
     this.logger.log("30 second tick in good morning cron");
-  }
+  }*/
 }

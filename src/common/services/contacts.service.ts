@@ -1,7 +1,13 @@
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { OAuth2Client } from "google-auth-library";
 import { people, people_v1 } from "@googleapis/people";
-import { GoogleOauthTokenManagementService } from "./google-oauth-token-management.service";
+
+export type Contact = {
+  name: string;
+  birthday: string;
+  email: string;
+  phone: string;
+};
 
 @Injectable()
 export class ContactsService {
@@ -9,7 +15,7 @@ export class ContactsService {
 
   constructor() {}
 
-  async retrieveContacts(authClient: OAuth2Client): Promise<any> {
+  async retrieveContacts(authClient: OAuth2Client): Promise<Contact[]> {
     const service: people_v1.People = people({ version: "v1", auth: authClient });
 
     const res = await service.people.connections.list({
@@ -18,11 +24,11 @@ export class ContactsService {
       personFields: "names,birthdays,emailAddresses,phoneNumbers",
     });
 
-    const connections = res.data.connections;
-    return !connections ? [] : connections.map(this.formatConnection);
+    const connections = res.data.connections || [];
+    return connections.map(this.formatConnection);
   }
 
-  formatConnection(connection: people_v1.Schema$Person): any {
+  private formatConnection(connection: people_v1.Schema$Person): Contact {
     const names =
       connection.names?.map((name) => name.displayName).join(", ") || "No Name";
 
@@ -37,6 +43,6 @@ export class ContactsService {
     const phones =
       connection.phoneNumbers?.map((phone) => phone.value).join(", ") || "No Phone";
 
-    return { names, birthdays, emails, phones };
+    return { name: names, birthday: birthdays, email: emails, phone: phones };
   }
 }

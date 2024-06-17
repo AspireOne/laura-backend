@@ -4,3 +4,7 @@
 // - utils are general and can be shared across projects.
 // - common are project specific and should be shared only within the project.
 // - common should also contain libs etc.
+
+function removeDiacritics(str: string) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
