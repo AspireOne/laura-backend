@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
-import { APP_GUARD } from "@nestjs/core";
+import { APP_FILTER, APP_GUARD } from "@nestjs/core";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { ScheduleModule } from "@nestjs/schedule";
-import { TestSchedulerService } from "./common/schedulers/test.scheduler.service";
+import { TestSchedulerService } from "./schedulers/test.scheduler.service";
 import { OpenAIProvider } from "./common/providers/openai.provider";
 import { DatabaseProvider } from "./common/providers/database.provider";
 import { FucksGivenModule } from "./routes/fucks-given/fucks-given.module";
@@ -13,22 +13,25 @@ import { TestsModule } from "./routes/tests/tests.module";
 import { FirebaseAdminProvider } from "./common/providers/firebase-admin.provider";
 import { NotificationsModule } from "./routes/notifications/notifications.module";
 import { ExpoProvider } from "./common/providers/expo.provider";
-import { GoodMorningSchedulerService } from "./common/schedulers/good-morning.scheduler.service";
+import { DailyQuoteSchedulerService } from "./schedulers/daily-quote.scheduler.service";
 import { ProvidersModule } from "./common/providers/providers.module";
 import { ServicesModule } from "./common/services/services.module";
 import { GoogleOauthTokenManagementService } from "./common/services/google-oauth-token-management.service";
 import { OauthModule } from "./routes/oauth/oauth.module";
+import { SchedulersModule } from "./schedulers/schedulers.module";
+import { ExceptionFilter } from "./common/filters/exception.filter";
 
 @Module({
   imports: [
     ScheduleModule.forRoot(),
-    FucksGivenModule,
     CacheModule.register(),
+    FucksGivenModule,
     TestsModule,
     NotificationsModule,
     OauthModule,
     ProvidersModule,
     ServicesModule,
+    SchedulersModule,
   ],
   controllers: [AppController],
   // Almost everything should be imported here.
@@ -36,7 +39,7 @@ import { OauthModule } from "./routes/oauth/oauth.module";
   providers: [
     // CRON / services
     TestSchedulerService,
-    GoodMorningSchedulerService,
+    DailyQuoteSchedulerService,
 
     // Services
     AppService,

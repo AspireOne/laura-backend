@@ -1,43 +1,29 @@
 import { Injectable, Inject, Logger } from "@nestjs/common";
 import { Cron, CronExpression } from "@nestjs/schedule";
-import { EXPO_PROVIDER_KEY } from "../providers/expo.provider";
+import { EXPO_PROVIDER_KEY } from "../common/providers/expo.provider";
 import Expo from "expo-server-sdk";
-import { env } from "../../helpers/env";
-import { OPENAI_PROVIDER_KEY } from "../providers/openai.provider";
+import { env } from "../helpers/env";
+import { OPENAI_PROVIDER_KEY } from "../common/providers/openai.provider";
 import { OpenAI } from "openai";
 
 @Injectable()
-export class GoodMorningSchedulerService {
-  private readonly logger = new Logger(GoodMorningSchedulerService.name);
+export class DailyQuoteSchedulerService {
+  private readonly logger = new Logger(DailyQuoteSchedulerService.name);
 
   constructor(
     @Inject(EXPO_PROVIDER_KEY) private readonly expo: Expo,
     @Inject(OPENAI_PROVIDER_KEY) private readonly openai: OpenAI,
   ) {}
 
-  @Cron(CronExpression.EVERY_30_SECONDS)
-  async handleTestCron() {
-    this.logger.log("30 second tick in good morning cron");
-  }
-
   // Fire off cron job at 12:40 PM.
   @Cron("50 12 * * *")
   async handleCron() {
-    this.logger.log("Fired good morning cron job");
-    let quote: string;
-
-    try {
-      const { quote: genQuote } = await this.genDailyQuote();
-      quote = genQuote;
-    } catch (error) {
-      this.logger.error("Error generating quote", error);
-      quote = "Error generating a quote";
-    }
-
+    const { quote } = await this.genDailyQuote();
+    
     await this.expo.sendPushNotificationsAsync([
       {
         to: env.EXPO_PUSH_TOKEN,
-        title: "Good Morning! Let's keep it calm and focused.",
+        title: "Good day! Let's keep it calm and focused.",
         body: quote,
       },
     ]);
