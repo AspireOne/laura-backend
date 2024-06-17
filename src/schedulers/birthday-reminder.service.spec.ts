@@ -28,6 +28,7 @@ describe("BirthdayReminderService", () => {
         OpenAIProvider,
         GoogleOAuthProvider,
       ],
+      imports: [ProvidersModule],
     }).compile();
 
     service = module.get<BirthdayReminderService>(BirthdayReminderService);
