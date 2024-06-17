@@ -1,8 +1,18 @@
 import { Module } from "@nestjs/common";
+import { GoogleOauthTokenManagementService } from "./google-oauth-token-management.service";
+import { ProvidersModule } from "../providers/providers.module";
+import { ContactsService } from "./contacts.service";
+import { GoogleOauthClientService } from "./google-oauth-client.service";
 
 @Module({
-  providers: [],
-  exports: [],
+  imports: [ProvidersModule],
+  providers: [
+    GoogleOauthTokenManagementService,
+    ContactsService,
+    GoogleOauthTokenManagementService,
+    GoogleOauthClientService,
+  ],
+  exports: [GoogleOauthTokenManagementService, ContactsService, GoogleOauthClientService],
 })
 
 /**

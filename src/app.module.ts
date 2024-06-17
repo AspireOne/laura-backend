@@ -16,6 +16,8 @@ import { ExpoProvider } from "./common/providers/expo.provider";
 import { GoodMorningSchedulerService } from "./common/schedulers/good-morning.scheduler.service";
 import { ProvidersModule } from "./common/providers/providers.module";
 import { ServicesModule } from "./common/services/services.module";
+import { GoogleOauthTokenManagementService } from "./common/services/google-oauth-token-management.service";
+import { OauthModule } from "./routes/oauth/oauth.module";
 
 @Module({
   imports: [
@@ -24,6 +26,7 @@ import { ServicesModule } from "./common/services/services.module";
     CacheModule.register(),
     TestsModule,
     NotificationsModule,
+    OauthModule,
     ProvidersModule,
     ServicesModule,
   ],
@@ -37,6 +40,7 @@ import { ServicesModule } from "./common/services/services.module";
 
     // Services
     AppService,
+    GoogleOauthTokenManagementService,
 
     // Providers
     OpenAIProvider,

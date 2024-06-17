@@ -1,12 +1,12 @@
 import { Module } from "@nestjs/common";
-import { TestsService } from "./tests.service";
-import { TestsController } from "./tests.controller";
+import { OauthService } from "./oauth.service";
+import { OauthController } from "./oauth.controller";
 import { ProvidersModule } from "../../common/providers/providers.module";
 import { ServicesModule } from "../../common/services/services.module";
 
 @Module({
   imports: [ProvidersModule, ServicesModule],
-  controllers: [TestsController],
-  providers: [TestsService],
+  controllers: [OauthController],
+  providers: [OauthService],
 })
-export class TestsModule {}
+export class OauthModule {}

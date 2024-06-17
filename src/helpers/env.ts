@@ -16,6 +16,12 @@ const envSchema = z.object({
     .transform((key) => key.replace(/\\n/g, "\n")),
   EXPO_ACCESS_TOKEN: z.string().min(1),
   EXPO_PUSH_TOKEN: z.string().min(1),
+  // TOOD: Make it enforce a certain structure.
+  GOOGLE_API_CREDENTIALS: z
+    .string()
+    .min(1)
+    .transform((creds) => JSON.parse(creds)),
+  DEPLOYED_URL: z.string().min(1),
 });
 
 export const env = envSchema.parse(process.env);

@@ -5,11 +5,15 @@ import { AITranslateIntoEmojisDto } from "./dto/ai-translate-into-emojis.dto";
 import { EXPO_PROVIDER_KEY } from "../../common/providers/expo.provider";
 import Expo, { ExpoPushMessage } from "expo-server-sdk";
 import { env } from "../../helpers/env";
+import { ContactsService } from "../../common/services/contacts.service";
+import { GoogleOauthTokenManagementService } from "../../common/services/google-oauth-token-management.service";
 
 @Controller("tests")
 export class TestsController {
   constructor(
     private readonly testsService: TestsService,
+    private readonly contacts: ContactsService,
+    private readonly oauth: GoogleOauthTokenManagementService,
     @Inject(EXPO_PROVIDER_KEY) private readonly expo: Expo,
   ) {}
 
@@ -22,7 +26,9 @@ export class TestsController {
 
   @Get("/contacts")
   async fetchContacts() {
-    // TODO
+    const authClient = await this.oauth.ensureClientIsAuthorized();
+    const contacts = await this.contacts.retrieveContacts(authClient);
+    return contacts;
   }
 
   @Post("send-notification")
