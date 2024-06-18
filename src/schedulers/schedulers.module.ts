@@ -6,6 +6,7 @@ import { ProvidersModule } from "../common/providers/providers.module";
 import { ServicesModule } from "../common/services/services.module";
 import { DbExpireClearSchedule } from "./db-expire-clear.scheduler.service";
 import { BirthdayReminderSchedulerService } from "./birthday-reminder-scheduler/birthday-reminder.scheduler.service";
+import { DailyHotMessageSchedulerService } from "src/schedulers/birthday-reminder-scheduler/daily-hot-message.scheduler.service";
 
 @Module({
   imports: [ScheduleModule.forRoot(), ProvidersModule, ServicesModule],
@@ -14,6 +15,7 @@ import { BirthdayReminderSchedulerService } from "./birthday-reminder-scheduler/
     DbExpireClearSchedule,
     TestSchedulerService,
     BirthdayReminderSchedulerService,
+    DailyHotMessageSchedulerService,
   ],
 })
 export class SchedulersModule {}

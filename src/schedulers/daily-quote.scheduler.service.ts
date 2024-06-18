@@ -15,11 +15,10 @@ export class DailyQuoteSchedulerService {
     @Inject(OPENAI_PROVIDER_KEY) private readonly openai: OpenAI,
   ) {}
 
-  // Fire off cron job at 12:40 PM.
-  @Cron("50 12 * * *")
+  @Cron(CronExpression.EVERY_DAY_AT_10AM)
   async handleCron() {
     const { quote } = await this.genDailyQuote();
-    
+
     await this.expo.sendPushNotificationsAsync([
       {
         to: env.EXPO_PUSH_TOKEN,
