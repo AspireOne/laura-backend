@@ -7,7 +7,7 @@ import { DbExpireClearSchedule } from "src/schedulers/db-expire-clear.scheduler.
 import { TestSchedulerService } from "src/schedulers/test.scheduler.service";
 import {
   BirthdayReminderSchedulerService
-} from "src/schedulers/birthday-reminder-scheduler/birthday-reminder.scheduler.service";
+} from "src/schedulers/birthday/birthday-reminder.scheduler.service";
 
 @Module({
   imports: [],

@@ -1,7 +1,7 @@
 import { Catch, ArgumentsHost } from "@nestjs/common";
 import { BaseExceptionFilter } from "@nestjs/core";
 import Expo from "expo-server-sdk";
-import { env } from "../../helpers/env";
+import { env } from "src/helpers/env";
 
 @Catch()
 export class ExceptionFilter extends BaseExceptionFilter {

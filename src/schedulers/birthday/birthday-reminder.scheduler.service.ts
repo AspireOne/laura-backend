@@ -92,7 +92,6 @@ export class BirthdayReminderSchedulerService {
         {
           to: env.EXPO_PUSH_TOKEN,
           title: `${nameday.name} has a name day (svátek) in ${nameday.inDays} days!`,
-          data: nameday,
           priority: "high",
         },
       ]);
@@ -125,8 +124,6 @@ export class BirthdayReminderSchedulerService {
         to: env.EXPO_PUSH_TOKEN,
         title: `Error in ${BirthdayReminderSchedulerService.name}`,
         body: JSON.stringify(error),
-        subtitle: JSON.stringify(error),
-        data: error,
         priority: "high",
       },
     ]);
