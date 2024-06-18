@@ -1,7 +1,7 @@
 import { Provider } from "@nestjs/common";
 import { OAuth2Client } from "google-auth-library";
-import { constants } from "../../helpers/constants";
-import { env } from "../../helpers/env";
+import { constants } from "src/helpers/constants";
+import { env } from "src/helpers/env";
 
 export const GOOGLE_OAUTH_PROVIDER_KEY = "GoogleOAuth";
 

@@ -4,16 +4,16 @@ import { ScheduleModule } from "@nestjs/schedule";
 import { TestSchedulerService } from "./test.scheduler.service";
 import { ProvidersModule } from "../common/providers/providers.module";
 import { ServicesModule } from "../common/services/services.module";
-import { DbExpireClearSchedule } from "./db-expire-clear.service";
-import { BirthdayReminderService } from "./birthday-reminder.service";
+import { DbExpireClearSchedule } from "./db-expire-clear.scheduler.service";
+import { BirthdayReminderSchedulerService } from "./birthday-reminder-scheduler/birthday-reminder.scheduler.service";
 
 @Module({
   imports: [ScheduleModule.forRoot(), ProvidersModule, ServicesModule],
   providers: [
     DailyQuoteSchedulerService,
-    TestSchedulerService,
     DbExpireClearSchedule,
-    BirthdayReminderService,
+    TestSchedulerService,
+    BirthdayReminderSchedulerService,
   ],
 })
 export class SchedulersModule {}

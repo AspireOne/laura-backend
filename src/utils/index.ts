@@ -8,3 +8,8 @@
 export function replaceDiacritics(str: string) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
+
+export function splitDate(date: Date): [number, number, number] {
+  const [year, month, day] = date.toISOString().split("T")[0].split("-");
+  return [parseInt(year, 10), parseInt(month, 10), parseInt(day, 10)];
+}

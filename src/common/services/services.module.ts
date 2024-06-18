@@ -3,23 +3,15 @@ import { GoogleOauthTokenManagementService } from "./google-oauth-token-manageme
 import { ProvidersModule } from "../providers/providers.module";
 import { ContactsService } from "./contacts.service";
 import { GoogleOauthClientService } from "./google-oauth-client.service";
-import { SchedulerErrorHandlerService } from "./scheduler-error-handler.service";
 
 @Module({
   imports: [ProvidersModule, ServicesModule],
   providers: [
-    GoogleOauthTokenManagementService,
     ContactsService,
     GoogleOauthTokenManagementService,
     GoogleOauthClientService,
-    SchedulerErrorHandlerService,
   ],
-  exports: [
-    GoogleOauthTokenManagementService,
-    ContactsService,
-    GoogleOauthClientService,
-    SchedulerErrorHandlerService,
-  ],
+  exports: [GoogleOauthTokenManagementService, ContactsService, GoogleOauthClientService],
 })
 
 /**

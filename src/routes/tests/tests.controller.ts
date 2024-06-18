@@ -2,11 +2,11 @@ import { Body, Controller, Post, Inject, Get } from "@nestjs/common";
 import * as admin from "firebase-admin";
 import { TestsService } from "./tests.service";
 import { AITranslateIntoEmojisDto } from "./dto/ai-translate-into-emojis.dto";
-import { EXPO_PROVIDER_KEY } from "../../common/providers/expo.provider";
+import { EXPO_PROVIDER_KEY } from "src/common/providers/expo.provider";
 import Expo, { ExpoPushMessage } from "expo-server-sdk";
-import { env } from "../../helpers/env";
-import { ContactsService } from "../../common/services/contacts.service";
-import { GoogleOauthTokenManagementService } from "../../common/services/google-oauth-token-management.service";
+import { env } from "src/helpers/env";
+import { ContactsService } from "src/common/services/contacts.service";
+import { GoogleOauthTokenManagementService } from "src/common/services/google-oauth-token-management.service";
 
 @Controller("tests")
 export class TestsController {

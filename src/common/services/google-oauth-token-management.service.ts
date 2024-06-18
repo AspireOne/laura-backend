@@ -7,7 +7,7 @@ import { DB } from "kysely-codegen";
 import { GOOGLE_OAUTH_PROVIDER_KEY } from "../providers/google-oauth.provider";
 import { EXPO_PROVIDER_KEY } from "../providers/expo.provider";
 import Expo from "expo-server-sdk";
-import { env } from "../../helpers/env";
+import { env } from "src/helpers/env";
 
 @Injectable()
 export class GoogleOauthTokenManagementService {

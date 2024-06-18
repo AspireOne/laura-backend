@@ -1,26 +1,32 @@
 import axios from "../helpers/axios";
 import { constants } from "../helpers/constants";
+import { z } from "zod";
 
-type Month = {
-  nominative: string;
-  genitive: string;
-};
+const MonthSchema = z.object({
+  nominative: z.string(),
+  genitive: z.string(),
+});
 
-type NameDayInfo = {
-  date: string; // For example: "2024-06-17"
-  dayNumber: string; // For example: "17"
-  dayInWeek: string; // For example: "pondělí"
-  monthNumber: string; // For example: "6"
-  month: Month;
-  year: string; // For example: "2024"
-  /** This is the person's name */
-  name: string; // For example: "Adolf"
-  isHoliday: boolean;
-  holidayName: string | null;
-};
+const NameDayInfoSchema = z.object({
+  date: z.string().describe("Example: 2024-06-17"),
+  dayNumber: z.string().describe("Example: 17"),
+  dayInWeek: z.string().describe("Example: pondělí"),
+  monthNumber: z.string().describe("Example: 6"),
+  month: MonthSchema.describe("Month object containing nominative and genitive forms"),
+  year: z.string().describe("Example: 2024"),
+  name: z.string().describe("This is the person's name, e.g., Adolf"),
+  isHoliday: z.boolean(),
+  holidayName: z
+    .string()
+    .nullable()
+    .describe("Name of the holiday if it is a holiday, otherwise null"),
+});
+
+export type NameDayInfo = z.infer<typeof NameDayInfoSchema>;
 
 export async function getNameDay(date?: Date): Promise<NameDayInfo> {
   const dateFormatted = date?.toISOString()?.split("T")?.[0];
-  const res = await axios.get<NameDayInfo>(`${constants.nameDayApiUrl}/${dateFormatted}`);
-  return res.data;
+  const res = await axios.get(`${constants.nameDayApiUrl}/${dateFormatted}`);
+  const parsedData = NameDayInfoSchema.parse(res.data);
+  return parsedData;
 }
