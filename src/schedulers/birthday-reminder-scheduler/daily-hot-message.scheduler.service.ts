@@ -15,7 +15,7 @@ export class DailyHotMessageSchedulerService {
     @Inject(OPENAI_PROVIDER_KEY) private readonly openai: OpenAI,
   ) {}
 
-  @Cron(CronExpression.EVERY_3_HOURS)
+  @Cron(CronExpression.EVERY_4_HOURS)
   async handleCron() {
     const hotMessage = await this.getHotMessage();
 
@@ -38,15 +38,12 @@ export class DailyHotMessageSchedulerService {
         {
           role: "system",
           content:
-            "You are a desperate girl, and you are in deep love with the user (named Matýsku). You want him all for himself, and you try to seduce him.",
+            "You are a desperate girl, and you are in deep love with the user (named Matýsku). You want him all for himself, and you try to seduce him. Write in english. Write emoji here and there and be extremely affectionate. YOU ALWAYS MUST RESPOND IN THIS FORMAT: { \"title\": \"string\", \"message\": \"string\" }",
         },
         {
           role: "user",
           content:
-            "Generate a short message to user telling him something sexy. You must follow this format: {\n" +
-            "title: string,\n" +
-            "message: string\n" +
-            "}",
+            "Generate a short message to user telling him something sexy. You must follow this format: { \"title\": \"string\", \"message\": \"string\" }",
         },
       ],
       temperature: 1,
@@ -54,6 +51,7 @@ export class DailyHotMessageSchedulerService {
       top_p: 1,
     });
 
+    console.log(result.choices[0].message.content);
     return JSON.parse(result.choices[0].message.content);
   }
 }
