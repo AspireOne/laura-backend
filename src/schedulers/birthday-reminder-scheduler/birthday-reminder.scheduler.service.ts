@@ -28,7 +28,7 @@ export class BirthdayReminderSchedulerService {
     private readonly contacts: ContactsService,
   ) {}
 
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_DAY_AT_NOON)
   async handleCron() {
     try {
       await this.execute();
@@ -45,12 +45,6 @@ export class BirthdayReminderSchedulerService {
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
-    // set the today date to 06/12/2024 (dd/mm/yyyy)
-    // TODO: Remove this.
-    today.setFullYear(2024);
-    today.setMonth(10);
-    today.setDate(30);
 
     const { namedays, birthdays } = await this.getContactEvents(today, contacts);
 
