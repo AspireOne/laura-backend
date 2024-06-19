@@ -5,6 +5,7 @@ import Expo from "expo-server-sdk";
 import { env } from "../helpers/env";
 import { OPENAI_PROVIDER_KEY } from "../common/providers/openai.provider";
 import { OpenAI } from "openai";
+import { CronJob } from "src/common/decorators/cron.decorator";
 
 @Injectable()
 export class DailyQuoteSchedulerService {
@@ -15,7 +16,7 @@ export class DailyQuoteSchedulerService {
     @Inject(OPENAI_PROVIDER_KEY) private readonly openai: OpenAI,
   ) {}
 
-  @Cron(CronExpression.EVERY_DAY_AT_10AM)
+  @CronJob(CronExpression.EVERY_DAY_AT_10AM)
   async handleCron() {
     const { quote } = await this.genDailyQuote();
 
