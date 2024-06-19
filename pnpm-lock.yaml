@@ -50,6 +50,9 @@ importers:
       class-validator:
         specifier: ^0.14.1
         version: 0.14.1
+      croner:
+        specifier: ^8.0.2
+        version: 8.0.2
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -1743,6 +1746,10 @@ packages:
 
   cron@3.1.7:
     resolution: {integrity: sha512-tlBg7ARsAMQLzgwqVxy8AZl/qlTc5nibqYwtNGoCrd+cV+ugI+tvZC1oT/8dFH8W455YrywGykx/KMmAqOr7Jw==}
+
+  croner@8.0.2:
+    resolution: {integrity: sha512-HgSdlSUX8mIgDTTiQpWUP4qY4IFRMsduPCYdca34Pelt8MVdxdaDOzreFtCscA6R+cRZd7UbD1CD3uyx6J3X1A==}
+    engines: {node: '>=18.0'}
 
   cross-fetch@3.1.8:
     resolution: {integrity: sha512-cvA+JwZoU0Xq+h6WkMvAUqPEYy92Obet6UdKLfW60qn99ftItKjB5T+BkyWOFWe2pUyfQ+IJHmpOTznqk1M6Kg==}
@@ -6468,6 +6475,8 @@ snapshots:
     dependencies:
       '@types/luxon': 3.4.2
       luxon: 3.4.4
+
+  croner@8.0.2: {}
 
   cross-fetch@3.1.8:
     dependencies:

@@ -6,7 +6,7 @@ let firebaseApp: admin.app.App;
 
 export const FIREBASE_ADMIN_PROVIDER_KEY = "FirebaseAdmin";
 const FirebaseAdminProvider: Provider = {
-  provide: "FirebaseAdmin",
+  provide: FIREBASE_ADMIN_PROVIDER_KEY,
   useFactory: () => {
     if (!firebaseApp) {
       try {

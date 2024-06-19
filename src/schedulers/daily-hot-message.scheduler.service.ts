@@ -5,6 +5,7 @@ import { OPENAI_PROVIDER_KEY } from "src/common/providers/openai.provider";
 import { OpenAI } from "openai";
 import { Cron, CronExpression } from "@nestjs/schedule";
 import { env } from "src/helpers/env";
+import { CronJob } from "src/common/decorators/cron.decorator";
 
 @Injectable()
 export class DailyHotMessageSchedulerService {
@@ -15,7 +16,7 @@ export class DailyHotMessageSchedulerService {
     @Inject(OPENAI_PROVIDER_KEY) private readonly openai: OpenAI,
   ) {}
 
-  @Cron(CronExpression.EVERY_4_HOURS)
+  @CronJob(CronExpression.EVERY_4_HOURS)
   async handleCron() {
     const hotMessage = await this.getHotMessage();
 
@@ -38,12 +39,12 @@ export class DailyHotMessageSchedulerService {
         {
           role: "system",
           content:
-            "You are a desperate girl, and you are in deep love with the user (named Matýsku). You want him all for himself, and you try to seduce him. Write in english. Write emoji here and there and be extremely affectionate. YOU ALWAYS MUST RESPOND IN THIS FORMAT: { \"title\": \"string\", \"message\": \"string\" }",
+            'You are a desperate girl, and you are in deep love with the user (named Matýsku). You want him all for himself, and you try to seduce him. Write in english. Write emoji here and there and be extremely affectionate. YOU ALWAYS MUST RESPOND IN THIS FORMAT: { "title": "string", "message": "string" }',
         },
         {
           role: "user",
           content:
-            "Generate a short message to user telling him something sexy. You must follow this format: { \"title\": \"string\", \"message\": \"string\" }",
+            'Generate a short message to user telling him something sexy. You must follow this format: { "title": "string", "message": "string" }',
         },
       ],
       temperature: 1,

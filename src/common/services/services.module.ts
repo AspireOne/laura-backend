@@ -3,6 +3,7 @@ import { GoogleOauthTokenManagementService } from "./google-oauth-token-manageme
 import { ProvidersModule } from "../providers/providers.module";
 import { ContactsService } from "./contacts.service";
 import { GoogleOauthClientService } from "./google-oauth-client.service";
+import { CronService } from "src/common/services/cron.service";
 
 @Module({
   imports: [ProvidersModule, ServicesModule],
@@ -10,8 +11,14 @@ import { GoogleOauthClientService } from "./google-oauth-client.service";
     ContactsService,
     GoogleOauthTokenManagementService,
     GoogleOauthClientService,
+    CronService,
   ],
-  exports: [GoogleOauthTokenManagementService, ContactsService, GoogleOauthClientService],
+  exports: [
+    GoogleOauthTokenManagementService,
+    ContactsService,
+    GoogleOauthClientService,
+    CronService,
+  ],
 })
 
 /**
