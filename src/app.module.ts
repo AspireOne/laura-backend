@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { APP_FILTER, APP_GUARD } from "@nestjs/core";
+import { APP_GUARD } from "@nestjs/core";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { ScheduleModule } from "@nestjs/schedule";
@@ -19,7 +19,7 @@ import { ServicesModule } from "./common/services/services.module";
 import { GoogleOauthTokenManagementService } from "./common/services/google-oauth-token-management.service";
 import { OauthModule } from "./routes/oauth/oauth.module";
 import { SchedulersModule } from "./schedulers/schedulers.module";
-import { ExceptionFilter } from "./common/filters/exception.filter";
+import { CelebrationsModule } from "./routes/celebrations/celebrations.module";
 
 @Module({
   imports: [
@@ -32,6 +32,7 @@ import { ExceptionFilter } from "./common/filters/exception.filter";
     ProvidersModule,
     ServicesModule,
     SchedulersModule,
+    CelebrationsModule,
   ],
   controllers: [AppController],
   // Almost everything should be imported here.

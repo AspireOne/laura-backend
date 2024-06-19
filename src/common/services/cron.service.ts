@@ -22,7 +22,6 @@ export class CronService implements OnModuleInit {
         const { instance, metatype } = wrapper;
 
         if (!instance || !metatype) {
-          this.logger.warn("No instance or metatype found in provider wrapper");
           return;
         }
 

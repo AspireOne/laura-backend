@@ -24,9 +24,22 @@ const NameDayInfoSchema = z.object({
 
 export type NameDayInfo = z.infer<typeof NameDayInfoSchema>;
 
+const cache: { [key: string]: NameDayInfo } = {};
+
 export async function getNameDay(date?: Date): Promise<NameDayInfo> {
   const dateFormatted = date?.toISOString()?.split("T")?.[0];
+
+  // Check if data is in cache
+  if (cache[dateFormatted]) {
+    return cache[dateFormatted];
+  }
+  
+  // Fetch data from API
   const res = await axios.get(`${constants.nameDayApiUrl}/${dateFormatted}`);
   const parsedData = NameDayInfoSchema.parse(res.data);
+
+  // Store data in cache
+  cache[dateFormatted] = parsedData;
+
   return parsedData;
 }
