@@ -6,8 +6,8 @@ import { Kysely } from "kysely";
 import { CronJob } from "src/common/decorators/cron.decorator";
 
 @Injectable()
-export class DbExpireClearSchedule {
-  private readonly logger = new Logger(DbExpireClearSchedule.name);
+export class DbPruneService {
+  private readonly logger = new Logger(DbPruneService.name);
 
   constructor(@Inject(DATABASE_PROVIDER_KEY) private readonly db: Kysely<DB>) {}
 

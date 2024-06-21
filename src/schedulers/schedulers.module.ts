@@ -4,7 +4,7 @@ import { ScheduleModule } from "@nestjs/schedule";
 import { TestSchedulerService } from "./test.scheduler.service";
 import { ProvidersModule } from "../common/providers/providers.module";
 import { ServicesModule } from "../common/services/services.module";
-import { DbExpireClearSchedule } from "./db-expire-clear.scheduler.service";
+import { DbPruneService } from "./db-prune.scheduler.service";
 import { BirthdayReminderSchedulerService } from "src/schedulers/birthday/birthday-reminder.scheduler.service";
 import { DailyHotMessageSchedulerService } from "src/schedulers/daily-hot-message.scheduler.service";
 
@@ -12,7 +12,7 @@ import { DailyHotMessageSchedulerService } from "src/schedulers/daily-hot-messag
   imports: [ScheduleModule.forRoot(), ProvidersModule, ServicesModule],
   providers: [
     DailyQuoteSchedulerService,
-    DbExpireClearSchedule,
+    DbPruneService,
     TestSchedulerService,
     BirthdayReminderSchedulerService,
     DailyHotMessageSchedulerService,
