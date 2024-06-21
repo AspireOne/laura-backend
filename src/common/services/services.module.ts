@@ -4,6 +4,7 @@ import { ProvidersModule } from "../providers/providers.module";
 import { ContactsService } from "./contacts.service";
 import { GoogleOauthClientService } from "./google-oauth-client.service";
 import { CronService } from "src/common/services/cron.service";
+import { ErrorNotificationService } from "src/common/services/errorNotificationService";
 
 @Module({
   imports: [ProvidersModule, ServicesModule],
@@ -12,12 +13,14 @@ import { CronService } from "src/common/services/cron.service";
     GoogleOauthTokenManagementService,
     GoogleOauthClientService,
     CronService,
+    ErrorNotificationService,
   ],
   exports: [
     GoogleOauthTokenManagementService,
     ContactsService,
     GoogleOauthClientService,
     CronService,
+    ErrorNotificationService,
   ],
 })
 

@@ -12,6 +12,8 @@ import { DB } from "kysely-codegen";
 import { env } from "src/helpers/env";
 import { api } from "src/api";
 import { splitDate } from "src/utils";
+import { ErrorNotificationService } from "src/common/services/errorNotificationService";
+import { CronJob } from "src/common/decorators/cron.decorator";
 
 type Event = Contact & { inDays: number };
 
@@ -28,14 +30,9 @@ export class BirthdayReminderSchedulerService {
     private readonly contacts: ContactsService,
   ) {}
 
-  @Cron(CronExpression.EVERY_DAY_AT_NOON)
+  @CronJob(CronExpression.EVERY_DAY_AT_NOON)
   async handleCron() {
-    try {
-      await this.execute();
-    } catch (error) {
-      await this.sendErrorNotification(error);
-      throw error;
-    }
+    await this.execute();
   }
 
   async execute() {
@@ -116,16 +113,5 @@ export class BirthdayReminderSchedulerService {
         },
       ]);
     }
-  }
-
-  private async sendErrorNotification(error: any) {
-    await this.expo.sendPushNotificationsAsync([
-      {
-        to: env.EXPO_PUSH_TOKEN,
-        title: `Error in ${BirthdayReminderSchedulerService.name}`,
-        body: JSON.stringify(error),
-        priority: "high",
-      },
-    ]);
   }
 }
