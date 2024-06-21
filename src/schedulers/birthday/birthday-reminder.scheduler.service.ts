@@ -83,7 +83,7 @@ export class BirthdayReminderSchedulerService {
       await this.expo.sendPushNotificationsAsync([
         {
           to: env.EXPO_PUSH_TOKEN,
-          title: `${nameday.name} has a name day (svátek) in ${nameday.inDays} days!`,
+          title: `${nameday.name} má svátek za ${nameday.inDays} dní!`,
           priority: "high",
         },
       ]);
@@ -101,9 +101,9 @@ export class BirthdayReminderSchedulerService {
       await this.expo.sendPushNotificationsAsync([
         {
           to: env.EXPO_PUSH_TOKEN,
-          title: `${birthday.name} has a birthday in ${birthday.inDays} days!`,
-          subtitle: yearDiff > 0 ? `Turning ${yearDiff} years old` : undefined,
-          body: yearDiff > 0 ? `Turning ${yearDiff} years old` : undefined,
+          title: `${birthday.name} má narozky za ${birthday.inDays} dní!`,
+          subtitle: yearDiff > 0 ? `Bude mu nebo jí ${yearDiff}` : undefined,
+          body: yearDiff > 0 ? `Bude mu nebo jí ${yearDiff}` : undefined,
           priority: "high",
         },
       ]);
