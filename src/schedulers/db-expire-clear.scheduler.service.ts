@@ -13,7 +13,7 @@ export class DbExpireClearSchedule {
 
   // Fire off at the midnight
   @CronJob(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-  async handleCron() {
+  async scheduleDbPrune() {
     // this.db.deleteFrom("api_keys").where("deleted_at", "<", new Date()).execute();
     // repeat...
   }

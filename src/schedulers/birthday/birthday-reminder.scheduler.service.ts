@@ -12,7 +12,6 @@ import { DB } from "kysely-codegen";
 import { env } from "src/helpers/env";
 import { api } from "src/api";
 import { splitDate } from "src/utils";
-import { ErrorNotificationService } from "src/common/services/errorNotificationService";
 import { CronJob } from "src/common/decorators/cron.decorator";
 
 type Event = Contact & { inDays: number };
@@ -31,11 +30,7 @@ export class BirthdayReminderSchedulerService {
   ) {}
 
   @CronJob(CronExpression.EVERY_DAY_AT_NOON)
-  async handleCron() {
-    await this.execute();
-  }
-
-  async execute() {
+  async scheduleBirthdayReminder() {
     const oauthClient = await this.oauth.getOAuthClient();
     const contacts = await this.contacts.retrieveContacts(oauthClient);
     this.logger.log(`Contacts retrieved | count: ${contacts?.length}`);
@@ -65,11 +60,11 @@ export class BirthdayReminderSchedulerService {
     for (const inDays of this.daysBefore) {
       const date = new Date(today);
       date.setDate(today.getDate() + inDays);
-      const namedayData = await api.getNameDay(date);
+      const nameday = await api.getNameDay(date);
 
       // prettier-ignore
-      const foundNamedays = this.contacts.getContactsWithNameday(contacts, namedayData.name);
-      const foundBirthdays = this.contacts.getContactsWithBirthday(date, contacts);
+      const foundNamedays = this.contacts.filterContactsWithNameday(contacts, nameday.names);
+      const foundBirthdays = this.contacts.filterContactsWithBirthday(contacts, date);
 
       namedays = namedays.concat(
         foundNamedays.map((nameday) => ({ ...nameday, inDays })),

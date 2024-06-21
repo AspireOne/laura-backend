@@ -17,7 +17,7 @@ export class DailyHotMessageSchedulerService {
   ) {}
 
   @CronJob(CronExpression.EVERY_4_HOURS)
-  async handleCron() {
+  async scheduleDailyHotMessage() {
     const hotMessage = await this.getHotMessage();
 
     await this.expo.sendPushNotificationsAsync([

@@ -5,7 +5,7 @@ import { GoogleOauthClientService } from "src/common/services/google-oauth-clien
 import { GetCelebrationsDto } from "src/routes/celebrations/dto/get-celebrations.dto";
 
 type GetUpcomingWeekNamedays = {
-  name: string;
+  names: string[];
   inDays: number;
 }[];
 
@@ -41,9 +41,9 @@ export class CelebrationsService {
     const upcomingWeekNamedays = await this.getUpcomingWeekNamedays(today);
 
     return upcomingWeekNamedays.map((nameday) => {
-      const contactsWithNameday = this.contactsService.getContactsWithNameday(
+      const contactsWithNameday = this.contactsService.filterContactsWithNameday(
         contacts,
-        nameday.name,
+        nameday.names,
       );
 
       return {
@@ -63,9 +63,9 @@ export class CelebrationsService {
       const targetDate = new Date(today);
       targetDate.setDate(today.getDate() + day);
 
-      const contactsWithBirthday = this.contactsService.getContactsWithBirthday(
-        targetDate,
+      const contactsWithBirthday = this.contactsService.filterContactsWithBirthday(
         contacts,
+        targetDate,
       );
 
       birthdays.push({
@@ -86,7 +86,7 @@ export class CelebrationsService {
       const nameday = await api.getNameDay(targetDate);
 
       names.push({
-        name: nameday.name,
+        names: nameday.names,
         inDays: day,
       });
     }

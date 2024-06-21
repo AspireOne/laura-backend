@@ -17,7 +17,7 @@ export class DailyQuoteSchedulerService {
   ) {}
 
   @CronJob(CronExpression.EVERY_DAY_AT_10AM)
-  async handleCron() {
+  async scheduleDailyQuote() {
     const { quote } = await this.genDailyQuote();
 
     await this.expo.sendPushNotificationsAsync([

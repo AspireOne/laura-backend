@@ -1,9 +1,7 @@
-import { Inject, Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { OAuth2Client } from "google-auth-library";
 import { people, people_v1 } from "@googleapis/people";
-import { api } from "src/api";
 import { replaceDiacritics } from "src/utils";
-import { NameDayInfo } from "src/api/name-day";
 
 export type Contact = {
   name: string;
@@ -11,6 +9,41 @@ export type Contact = {
   email: string;
   phone: string;
 };
+
+const interchangeableNameday = Object.freeze([
+  ["norbert", "bert", "bertik"],
+  ["honza", "jan"],
+  ["jaroslav", "jarek"],
+  ["sylva", "alan"],
+  ["terka", "tereza"],
+  ["karolina", "kaja"],
+  ["barbora", "bara"],
+  ["nelca", "nela", "nelunka"],
+  ["jiri", "jirka"],
+  ["josef", "jozka", "pepa"],
+  ["vaclav", "vasek"],
+  ["jaroslav", "jarda", "jarek"],
+  ["zdenek", "zdena", "zdenka"],
+  ["vojtech", "vojta"],
+  ["ladislav", "lada"],
+  ["miroslav", "mirek"],
+  ["stanislav", "standa"],
+  ["vladimir", "vlada"],
+  ["frantisek", "franta"],
+  ["bohumil", "bohous", "bob"],
+  ["bedrich", "beda"],
+  ["oldrich", "olda"],
+  ["antonin", "tonda"],
+  ["zbynek", "zbysek"],
+  ["bohuslav", "slavek"],
+  ["alois", "lojza"],
+  ["radek", "radoslav"],
+  ["lubomir", "lubos"],
+  ["cestmir", "cesta"],
+  ["miloslav", "milos"],
+  ["premysl", "premek"],
+  ["svatopluk", "svata"],
+]);
 
 @Injectable()
 export class ContactsService {
@@ -50,21 +83,35 @@ export class ContactsService {
   }
 
   /**
-   * This method is used to get contacts with a specific nameday.
-   * It takes an array of contacts and a nameday data object as input.
-   * It returns an array of contacts that have the nameday (matching name).
+   * This method is used to get contacts with specific namedays.
+   * It takes an array of contacts and an array of nameday names as input.
+   * It returns an array of contacts that have any of the namedays (matching names).
    */
-  public getContactsWithNameday(contacts: Contact[], namedayName: string): Contact[] {
-    return contacts.filter((contact) => {
-      const contactName = replaceDiacritics(contact.name).toLowerCase();
-      const nameday = replaceDiacritics(namedayName).toLowerCase();
+  public filterContactsWithNameday(
+    contacts: Contact[],
+    namedayNames: string[],
+  ): Contact[] {
+    const normalizeAndTrim = (name: string) =>
+      replaceDiacritics(name).trim().toLowerCase();
+    const namedaysNormalized = new Set(namedayNames.map(normalizeAndTrim));
 
-      const contactWords = contactName.split(" ");
-      return contactWords.includes(nameday);
+    return contacts.filter((contact) => {
+      const firstName = contact.name?.split(" ")[0] ?? contact.name;
+      const normalizedName = normalizeAndTrim(firstName);
+
+      const possibleNames = interchangeableNameday.find((names) =>
+        names.includes(normalizedName),
+      ) ?? [normalizedName];
+
+      return possibleNames.some((name) => {
+        const isMatch = namedaysNormalized.has(name);
+        this.logger.log(`Svátek ${name} | ${[...namedaysNormalized]} = ${isMatch}`);
+        return isMatch;
+      });
     });
   }
 
-  public getContactsWithBirthday(date: Date, contacts: Contact[]): Contact[] {
+  public filterContactsWithBirthday(contacts: Contact[], date: Date): Contact[] {
     const dateFormatted = date.toISOString().split("T")[0];
     const [, _month, _day] = dateFormatted.split("-");
 

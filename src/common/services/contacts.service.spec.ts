@@ -50,7 +50,7 @@ describe("BirthdayReminderSchedulerService", () => {
       mockContacts[2],
     ];
 
-    const result = service.getContactsWithNameday(mockContacts, mockNamedayData.name);
+    const result = service.filterContactsWithNameday(mockContacts, [mockNamedayData.name]);
     expect(result).toEqual(expectedContacts);
   });
 
@@ -64,7 +64,7 @@ describe("BirthdayReminderSchedulerService", () => {
       mockContacts[5],
     ];
 
-    const result = service.getContactsWithBirthday(mockDate, mockContacts);
+    const result = service.filterContactsWithBirthday(mockContacts, mockDate);
     expect(result).toEqual(expectedContacts);
   });
 
@@ -76,7 +76,7 @@ describe("BirthdayReminderSchedulerService", () => {
       { name: "Matěj Pešl", birthday: "2004-12-6", email: "matejpesl1@gmail.com", phone: "+420 732 175 490" },
     ];
 
-    const result = service.getContactsWithBirthday(mockDate, mockContacts);
+    const result = service.filterContactsWithBirthday(mockContacts, mockDate);
     expect(result).toEqual(expectedContacts);
   });
 
