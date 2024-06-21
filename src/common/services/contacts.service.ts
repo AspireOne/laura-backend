@@ -1,14 +1,9 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Inject, Injectable, Logger } from "@nestjs/common";
 import { OAuth2Client } from "google-auth-library";
 import { people, people_v1 } from "@googleapis/people";
 import { replaceDiacritics } from "src/utils";
-
-export type Contact = {
-  name: string;
-  birthday: string;
-  email: string;
-  phone: string;
-};
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Cache } from "cache-manager";
 
 const interchangeableNameday = Object.freeze([
   ["norbert", "bert", "bertik"],
@@ -45,13 +40,28 @@ const interchangeableNameday = Object.freeze([
   ["svatopluk", "svata"],
 ]);
 
+export type Contact = {
+  name: string;
+  birthday: string;
+  email: string;
+  phone: string;
+};
+
 @Injectable()
 export class ContactsService {
   private readonly logger = new Logger(ContactsService.name);
 
-  constructor() {}
+  constructor(@Inject(CACHE_MANAGER) private readonly cache: Cache) {}
 
   async retrieveContacts(authClient: OAuth2Client): Promise<Contact[]> {
+    const cacheKey = `google_contacts_${authClient.credentials.access_token}`;
+
+    const cachedContacts = await this.cache.get<Contact[]>(cacheKey);
+    if (cachedContacts) {
+      this.logger.debug("Returning contacts from cache");
+      return cachedContacts;
+    }
+
     const service: people_v1.People = people({ version: "v1", auth: authClient });
 
     const res = await service.people.connections.list({
@@ -60,8 +70,13 @@ export class ContactsService {
       personFields: "names,birthdays,emailAddresses,phoneNumbers",
     });
 
-    const connections = res.data.connections || [];
-    return connections.map(this.formatConnection);
+    const contacts = res.data.connections || [];
+    const formattedContacts = contacts.map(this.formatConnection);
+
+    // Cache the contacts for 1 hour (3600 seconds)
+    await this.cache.set(cacheKey, formattedContacts, 3600000);
+
+    return formattedContacts;
   }
 
   private formatConnection(connection: people_v1.Schema$Person): Contact {

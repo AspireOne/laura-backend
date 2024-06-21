@@ -5,9 +5,10 @@ import { ContactsService } from "./contacts.service";
 import { GoogleOauthClientService } from "./google-oauth-client.service";
 import { CronService } from "src/common/services/cron.service";
 import { ErrorNotificationService } from "src/common/services/errorNotificationService";
+import { CacheModule } from "@nestjs/cache-manager";
 
 @Module({
-  imports: [ProvidersModule, ServicesModule],
+  imports: [ProvidersModule, ServicesModule, CacheModule.register()],
   providers: [
     ContactsService,
     GoogleOauthTokenManagementService,

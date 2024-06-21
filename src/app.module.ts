@@ -20,11 +20,17 @@ import { GoogleOauthTokenManagementService } from "./common/services/google-oaut
 import { OauthModule } from "./routes/oauth/oauth.module";
 import { SchedulersModule } from "./schedulers/schedulers.module";
 import { CelebrationsModule } from "./routes/celebrations/celebrations.module";
+import { LoggerModule } from "nestjs-pino";
 
 @Module({
   imports: [
     ScheduleModule.forRoot(),
     CacheModule.register(),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        level: process.env.NODE_ENV === "production" ? "info" : "debug",
+      },
+    }),
     FucksGivenModule,
     TestsModule,
     NotificationsModule,

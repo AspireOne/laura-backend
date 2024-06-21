@@ -1,6 +1,8 @@
 import { api } from "src/api";
 import { Logger } from "@nestjs/common";
 import { Contact, ContactsService } from "src/common/services/contacts.service";
+import { Test, TestingModule } from "@nestjs/testing";
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
 
 // prettier-ignore
 const mockContacts: Contact[] = [
@@ -30,11 +32,44 @@ jest.mock("../../api", () => ({
   },
 }));
 
+const createMockCacheManager = () => {
+  const cache = new Map<string, any>();
+  return {
+    get: jest.fn((key: string) => Promise.resolve(cache.get(key))),
+    set: jest.fn((key: string, value: any) => {
+      cache.set(key, value);
+      return Promise.resolve();
+    }),
+    del: jest.fn((key: string) => {
+      cache.delete(key);
+      return Promise.resolve();
+    }),
+    reset: jest.fn(() => {
+      cache.clear();
+      return Promise.resolve();
+    }),
+    wrap: jest.fn(),
+  } as unknown as Cache;
+};
+
 describe("BirthdayReminderSchedulerService", () => {
   let service: ContactsService;
+  let mockCacheManager: Cache;
 
-  beforeEach(() => {
-    service = new ContactsService();
+  beforeEach(async () => {
+    mockCacheManager = createMockCacheManager();
+
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        ContactsService,
+        {
+          provide: CACHE_MANAGER,
+          useValue: mockCacheManager,
+        },
+      ],
+    }).compile();
+
+    service = module.get<ContactsService>(ContactsService);
   });
 
   it("should filter contacts with matching nameday", () => {
@@ -50,7 +85,9 @@ describe("BirthdayReminderSchedulerService", () => {
       mockContacts[2],
     ];
 
-    const result = service.filterContactsWithNameday(mockContacts, [mockNamedayData.name]);
+    const result = service.filterContactsWithNameday(mockContacts, [
+      mockNamedayData.name,
+    ]);
     expect(result).toEqual(expectedContacts);
   });
 
