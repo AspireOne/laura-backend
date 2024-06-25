@@ -8,8 +8,8 @@ import { env } from "src/helpers/env";
 import { CronJob } from "src/common/decorators/cron.decorator";
 
 @Injectable()
-export class DailyHotMessageSchedulerService {
-  private readonly logger = new Logger(DailyHotMessageSchedulerService.name);
+export class DailyFactSchedulerService {
+  private readonly logger = new Logger(DailyFactSchedulerService.name);
 
   constructor(
     @Inject(EXPO_PROVIDER_KEY) private readonly expo: Expo,
@@ -17,14 +17,14 @@ export class DailyHotMessageSchedulerService {
   ) {}
 
   @CronJob(CronExpression.EVERY_2_HOURS)
-  async scheduleDailyHotMessage() {
-    const hotMessage = await this.getHotMessage();
+  async scheduleDailyFact() {
+    const fact = await this.getHotMessage();
 
     await this.expo.sendPushNotificationsAsync([
       {
         to: env.EXPO_PUSH_TOKEN,
-        title: hotMessage?.title ?? "Love ya",
-        body: hotMessage?.message ?? "Command R fucked up the JSON format",
+        title: fact?.title,
+        body: fact?.message,
       },
     ]);
   }
@@ -34,25 +34,24 @@ export class DailyHotMessageSchedulerService {
     message: string;
   }> {
     const result = await this.openai.chat.completions.create({
-      model: "cohere/command-r",
+      model: "google/gemini-flash-1.5",
       messages: [
         {
           role: "system",
           content:
-            'You are an expert in fun facts about economy, psychology, and general life. YOU ALWAYS MUST RESPOND IN THIS FORMAT: { "title": "string", "message": "string" }',
+            'You are an expert in fun facts about economy, psychology, and general life. YOU ALWAYS MUST RESPOND IN THIS JSON FORMAT: { "title": "string", "message": "string" }',
         },
         {
           role: "user",
           content:
-            'Generate a short fun fact. You must follow this format: { "title": "string", "message": "string" }',
+            'Generate a short fun fact (in proper JSON). You must follow this format: {"title":"string","message":"string"}',
         },
       ],
       temperature: 1,
       max_tokens: 400,
       top_p: 1,
     });
-
-    console.log(result.choices[0].message.content);
+    
     return JSON.parse(result.choices[0].message.content);
   }
 }

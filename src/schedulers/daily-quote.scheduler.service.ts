@@ -31,16 +31,16 @@ export class DailyQuoteSchedulerService {
 
   async genDailyQuote() {
     const result = await this.openai.chat.completions.create({
-      model: "cohere/command-r",
+      model: "google/gemini-flash-1.5",
       messages: [
         {
           role: "system",
-          content: "You are an expert in psychological motivation.",
+          content: "You are an expert in psychological motivation. YOU ALWAYS MUST RESPOND IN THIS JSON FORMAT: { \"title\": \"string\", \"message\": \"string\" }",
         },
         {
           role: "user",
           content:
-            "Generate a quote that encourages a person that struggles with willpower and discipline. Ideally a practical tip.",
+            "Generate a quote that encourages a person that struggles with willpower and discipline. Ideally a practical tip. Write in in proper JSON, in this format: {\"title\":\"string\",\"message\":\"string\"}",
         },
       ],
       temperature: 1,

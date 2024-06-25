@@ -38,25 +38,15 @@ import { LoggerModule } from "nestjs-pino";
     ProvidersModule,
     ServicesModule,
     SchedulersModule,
+
     CelebrationsModule,
   ],
   controllers: [AppController],
   // Almost everything should be imported here.
   // For example, cron services
   providers: [
-    // CRON / services
-    TestSchedulerService,
-    DailyQuoteSchedulerService,
-
     // Services
     AppService,
-    GoogleOauthTokenManagementService,
-
-    // Providers
-    OpenAIProvider,
-    DatabaseProvider,
-    ExpoProvider,
-    FirebaseAdminProvider,
 
     // Guards
     {
