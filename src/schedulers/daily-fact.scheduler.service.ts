@@ -16,7 +16,7 @@ export class DailyFactSchedulerService {
     @Inject(OPENAI_PROVIDER_KEY) private readonly openai: OpenAI,
   ) {}
 
-  @CronJob(CronExpression.EVERY_2_HOURS)
+  // @CronJob(CronExpression.EVERY_2_HOURS)
   async scheduleDailyFact() {
     const fact = await this.getHotMessage();
 

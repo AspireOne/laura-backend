@@ -16,7 +16,7 @@ export class DailyQuoteSchedulerService {
     @Inject(OPENAI_PROVIDER_KEY) private readonly openai: OpenAI,
   ) {}
 
-  @CronJob(CronExpression.EVERY_DAY_AT_10AM)
+  // @CronJob(CronExpression.EVERY_DAY_AT_10AM)
   async scheduleDailyQuote() {
     const { quote } = await this.genDailyQuote();
 
