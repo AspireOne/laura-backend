@@ -19,7 +19,7 @@ type Event = Contact & { inDays: number };
 @Injectable()
 export class BirthdayReminderSchedulerService {
   private readonly logger = new Logger(BirthdayReminderSchedulerService.name);
-  private readonly daysBefore = [7, 3, 0];
+  private readonly daysBefore = [3, 0];
 
   constructor(
     @Inject(EXPO_PROVIDER_KEY) private readonly expo: Expo,
