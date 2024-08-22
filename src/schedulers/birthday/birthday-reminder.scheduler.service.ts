@@ -29,7 +29,7 @@ export class BirthdayReminderSchedulerService {
     private readonly contacts: ContactsService,
   ) {}
 
-  @CronJob(CronExpression.EVERY_DAY_AT_NOON)
+  @CronJob(CronExpression.EVERY_DAY_AT_9AM)
   async scheduleBirthdayReminder() {
     const oauthClient = await this.oauth.getOAuthClient();
     const contacts = await this.contacts.retrieveContacts(oauthClient);
